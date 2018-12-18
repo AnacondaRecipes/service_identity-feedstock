@@ -22,9 +22,10 @@ requirements:
   run:
     - python
     - attrs >=16.0.0
+    - ipaddress  # [py27]
     - pyasn1
     - pyasn1-modules
-    - pyopenssl >=0.12
+    - cryptography
 
 test:
   imports:
