@@ -11,9 +11,9 @@ source:
   sha256: {{ sha256 }}
 
 build:
-  noarch: {{ noarch_python }}
+  noarch: python
   number: 0
-  script: python -m pip install --no-deps --ignore-installed . --verbose
+  script: "{{ PYTHON }} -m pip install --no-deps --ignore-installed . --verbose"
 
 requirements:
   host:
