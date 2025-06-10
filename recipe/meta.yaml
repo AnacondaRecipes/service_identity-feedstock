@@ -1,6 +1,5 @@
 {% set name = "service_identity" %}
 {% set version = "24.2.0" %}
-{% set sha256 = "b8683ba13f0d39c6cd5d625d2c5f65421d6d707b013b375c355751557cbe8e09" %}
 
 package:
   name: {{ name|lower }}
@@ -8,29 +7,38 @@ package:
 
 source:
   url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: {{ sha256 }}
+  sha256: b8683ba13f0d39c6cd5d625d2c5f65421d6d707b013b375c355751557cbe8e09
 
 build:
-  noarch: python
   number: 0
+  skip: true  # [py<38]
   script: {{ PYTHON }} -m pip install --no-deps --ignore-installed . --verbose
 
 requirements:
   host:
     - python
     - pip
+    - hatchling
+    - hatch-vcs
+    - hatch-fancy-pypi-readme
   run:
     - python
-    - six
-    - attrs >=16.0.0
-    - ipaddress  # [py27]
-    - pyasn1
+    - attrs >=19.1.0
     - pyasn1-modules
+    - pyasn1
     - cryptography
 
 test:
+  source_files:
+    - tests
+  requires:
+    - pip
+    - pytest
   imports:
     - service_identity
+  commands:
+    - pip check
+    - pytest -vv tests
 
 about:
   home: https://github.com/pyca/service_identity
