@@ -1,43 +1,51 @@
 {% set name = "service_identity" %}
-{% set version = "18.1.0" %}
-{% set sha256 = "0858a54aabc5b459d1aafa8a518ed2081a285087f349fe3e55197989232e2e2d" %}
+{% set version = "24.2.0" %}
 
 package:
   name: {{ name|lower }}
   version: {{ version }}
 
 source:
-  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: {{ sha256 }}
+  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
+  sha256: b8683ba13f0d39c6cd5d625d2c5f65421d6d707b013b375c355751557cbe8e09
 
 build:
-  noarch: python
-  number: 1
-  script: "{{ PYTHON }} -m pip install --no-deps --ignore-installed . --verbose"
+  number: 0
+  skip: true  # [py<38]
+  script: {{ PYTHON }} -m pip install --no-deps --no-build-isolation --ignore-installed . --verbose
 
 requirements:
   host:
     - python
     - pip
+    - hatchling
+    - hatch-vcs
+    - hatch-fancy-pypi-readme
   run:
     - python
-    - six
-    - attrs >=16.0.0
-    - ipaddress  # [py27]
-    - pyasn1
+    - attrs >=19.1.0
     - pyasn1-modules
+    - pyasn1
     - cryptography
 
 test:
+  source_files:
+    - tests
+  requires:
+    - pip
+    - pytest
   imports:
     - service_identity
+  commands:
+    - pip check
+    - pytest -vv tests
 
 about:
   home: https://github.com/pyca/service_identity
   license: MIT
   license_family: MIT
   license_file: LICENSE
-  summary: 'Service identity verification for pyOpenSSL.'
+  summary: Service identity verification for pyOpenSSL.
   description: |
     service_identity aspires to give you all the tools you need for verifying
     whether a certificate is valid for the intended purposes.
