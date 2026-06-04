@@ -1,18 +1,18 @@
 {% set name = "service_identity" %}
-{% set version = "24.2.0" %}
+{% set version = "26.1.0" %}
 
 package:
-  name: {{ name|lower }}
+  name: {{ name }}
   version: {{ version }}
 
 source:
   url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: b8683ba13f0d39c6cd5d625d2c5f65421d6d707b013b375c355751557cbe8e09
+  sha256: 6358c52882c96e66ac4a55eb3a72c7dd4a70763f8cc6fa4e70abde2656f4bf3b
 
 build:
   number: 0
-  skip: true  # [py<38]
   script: {{ PYTHON }} -m pip install --no-deps --no-build-isolation --ignore-installed . --verbose
+  skip: true  # [py<38]
 
 requirements:
   host:
@@ -24,9 +24,7 @@ requirements:
   run:
     - python
     - attrs >=19.1.0
-    - pyasn1-modules
-    - pyasn1
-    - cryptography
+    - cryptography>=47
 
 test:
   source_files:
